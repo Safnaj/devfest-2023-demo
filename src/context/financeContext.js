@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState, useContext } from "react";
 import { db } from "../config/firebase";
 import {
   addDoc,
@@ -6,19 +6,27 @@ import {
   deleteDoc,
   getDocs,
   doc,
+  updateDoc,
+  query,
+  where,
 } from "firebase/firestore";
+import { AuthContext } from "./authContext";
 
 export const FinanceContext = createContext({
   income: [],
   expenses: [],
   addIncome: () => {},
-  addExpense: () => {},
   removeIncome: () => {},
+  addExpense: () => {},
   removeExpense: () => {},
+  addCategory: () => {},
+  removeCategory: () => {},
 });
 
 export default function FinanceContextProvider({ children }) {
   const [income, setIncome] = useState([]);
+  const [expenses, setExpenses] = useState([]);
+  const { user } = useContext(AuthContext);
 
   // Add income to firestore database
   const addIncome = async (income) => {
@@ -57,12 +65,103 @@ export default function FinanceContextProvider({ children }) {
     }
   };
 
-  const values = { income, addIncome, removeIncome };
+  // Add expense to firestore database
+  const addExpense = async (expenseCategoryId, newExpense) => {
+    const docRef = doc(db, "expenses", expenseCategoryId);
+
+    try {
+      await updateDoc(docRef, { ...newExpense });
+
+      // Update State
+      setExpenses((prevState) => {
+        const updatedExpenses = [...prevState];
+
+        const foundIndex = updatedExpenses.findIndex((expense) => {
+          return expense.id === expenseCategoryId;
+        });
+
+        updatedExpenses[foundIndex] = { id: expenseCategoryId, ...newExpense };
+        return updatedExpenses;
+      });
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  // Remove expense from firestore database
+  const removeExpense = async (updatedExpense, expenseCategoryId) => {
+    try {
+      const docRef = doc(db, "expenses", expenseCategoryId);
+      await updateDoc(docRef, {
+        ...updatedExpense,
+      });
+      setExpenses((prevExpenses) => {
+        const updatedExpenses = [...prevExpenses];
+        const pos = updatedExpenses.findIndex(
+          (ex) => ex.id === expenseCategoryId
+        );
+        updatedExpenses[pos].items = [...updatedExpense.items];
+        updatedExpenses[pos].total = updatedExpense.total;
+        return updatedExpenses;
+      });
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  // Add category to firestore database
+  const addCategory = async (category) => {
+    try {
+      const collectionRef = collection(db, "expenses");
+
+      const docSnap = await addDoc(collectionRef, {
+        uid: user.uid,
+        ...category,
+        items: [],
+      });
+
+      setExpenses((prevExpenses) => {
+        return [
+          ...prevExpenses,
+          {
+            id: docSnap.id,
+            uid: user.uid,
+            items: [],
+            ...category,
+          },
+        ];
+      });
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  // Remove category from firestore database
+  const removeCategory = async (expenseCategoryId) => {
+    try {
+      const docRef = doc(db, "expenses", expenseCategoryId);
+      await deleteDoc(docRef);
+
+      setExpenses((prevExpenses) => {
+        const updatedExpenses = prevExpenses.filter(
+          (expense) => expense.id !== expenseCategoryId
+        );
+
+        return [...updatedExpenses];
+      });
+    } catch (error) {
+      throw error;
+    }
+  };
 
   useEffect(() => {
+    if (!user) return;
+
+    // Get income data from firestore db
     const getIncomeData = async () => {
       const collectionRef = collection(db, "income");
-      const docsSnap = await getDocs(collectionRef);
+      const qry = query(collectionRef, where("uid", "==", user.uid));
+      const docsSnap = await getDocs(qry);
       const data = docsSnap.docs.map((doc) => {
         return {
           id: doc.id,
@@ -72,8 +171,35 @@ export default function FinanceContextProvider({ children }) {
       });
       setIncome(data);
     };
+
+    // Get expenses from firestore db
+    const getExpensesData = async () => {
+      const collectionRef = collection(db, "expenses");
+      const qry = query(collectionRef, where("uid", "==", user.uid));
+      const docsSnap = await getDocs(qry);
+      const data = docsSnap.docs.map((doc) => {
+        return {
+          id: doc.id,
+          ...doc.data(),
+        };
+      });
+      setExpenses(data);
+    };
+
     getIncomeData();
-  }, []);
+    getExpensesData();
+  }, [user]);
+
+  const values = {
+    income,
+    expenses,
+    addIncome,
+    removeIncome,
+    addExpense,
+    removeExpense,
+    addCategory,
+    removeCategory,
+  };
 
   return (
     <FinanceContext.Provider value={values}>{children}</FinanceContext.Provider>
