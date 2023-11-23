@@ -1,9 +1,14 @@
 import { useContext } from "react";
 import { ImStatsBars } from "react-icons/im";
 import { AuthContext } from "../context/authContext";
+import { isFeatureEnabled, getFlagValue } from "../config/remoteConfig";
+import { FEATURE_ENABLE_STATS, WELCOME_MESSAGE } from "../constants/flags";
 
 const Navbar = () => {
   const { user, loading, logout } = useContext(AuthContext);
+  const welcomeMessage = getFlagValue(WELCOME_MESSAGE);
+  const isShowStatsEnabled = isFeatureEnabled(FEATURE_ENABLE_STATS);
+
   return (
     <header className='container max-w-2xl px-6 py-6 mx-auto'>
       <div className='flex items-center justify-between'>
@@ -18,16 +23,20 @@ const Navbar = () => {
               />
             </div>
 
-            <small>Hi, {user.displayName}!</small>
+            <small>
+              {welcomeMessage}, {user.displayName}!
+            </small>
           </div>
         )}
 
         {user && !loading && (
           <nav className='flex items-center gap-4'>
             <div>
-              <a href='#stats'>
-                <ImStatsBars className='text-2xl' />
-              </a>
+              {isShowStatsEnabled && (
+                <a href='#stats'>
+                  <ImStatsBars className='text-2xl' />
+                </a>
+              )}
             </div>
             <div>
               <button onClick={logout} className='btn btn-danger'>
