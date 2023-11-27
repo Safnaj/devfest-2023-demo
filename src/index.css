@@ -8,7 +8,7 @@
   }
 
   body {
-    @apply relative text-white bg-slate-900 relative;
+    @apply relative text-black dark:text-white bg-white dark:bg-slate-900;
   }
 
   button {
@@ -26,11 +26,11 @@
   }
 
   .btn-primary {
-    @apply border bg-slate-700 border-slate-700 text-lime-400;
+    @apply border border-white dark:border-slate-700 bg-blue-950 dark:bg-slate-700 text-white dark:text-lime-400;
   }
 
   .btn-primary-outline {
-    @apply border border-lime-400 text-lime-400;
+    @apply border border-blue-950 dark:border-lime-400 text-blue-950 dark:text-lime-400;
   }
 
   .btn-danger {

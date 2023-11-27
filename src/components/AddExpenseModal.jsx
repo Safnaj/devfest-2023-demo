@@ -63,7 +63,7 @@ const AddExpenseModal = ({ show, onClose }) => {
   return (
     <Modal show={show} onClose={onClose}>
       <div className='flex flex-col gap-4'>
-        <label>Enter an amount..</label>
+        <label>Enter an amount :</label>
         <input
           type='number'
           min={0.01}
@@ -73,13 +73,14 @@ const AddExpenseModal = ({ show, onClose }) => {
           onChange={(e) => {
             setExpenseAmount(e.target.value);
           }}
+          required
         />
       </div>
 
       {expenseAmount > 0 && (
         <div className='flex flex-col gap-4 mt-6'>
           <div className='flex items-center justify-between'>
-            <h3 className='text-xl capitalize'>Select expense category</h3>
+            <h3 className='text-lg capitalize'>Select expense category :</h3>
             <button
               onClick={() => {
                 setShowAddExpense(true);
@@ -92,10 +93,19 @@ const AddExpenseModal = ({ show, onClose }) => {
 
           {showAddExpense && (
             <div className='flex items-center justify-between'>
-              <input type='text' placeholder='Enter Title' ref={titleRef} />
-
+              <input
+                type='text'
+                placeholder='Enter Title'
+                ref={titleRef}
+                required
+              />
               <label>Pick Color</label>
-              <input type='color' className='w-24 h-10' ref={colorRef} />
+              <input
+                type='color'
+                className='w-24 h-10'
+                ref={colorRef}
+                required
+              />
               <button
                 onClick={addCategoryHandler}
                 className='btn btn-primary-outline'
@@ -123,8 +133,10 @@ const AddExpenseModal = ({ show, onClose }) => {
               >
                 <div
                   style={{
-                    boxShadow:
-                      expense.id === selectedCategory ? "1px 1px 4px" : "none",
+                    border:
+                      expense.id === selectedCategory
+                        ? "2px solid white"
+                        : "none",
                   }}
                   className='flex items-center justify-between px-4 py-4 bg-slate-700 rounded-3xl'
                 >
