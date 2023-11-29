@@ -23,6 +23,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
-const remoteConfig = () => ( isSupported()) && getRemoteConfig(app);
+const analytics = getAnalytics();
+const remoteConfig = () => isSupported() && getRemoteConfig(app);
 
-export { db, auth, remoteConfig };
+export { db, auth, analytics, remoteConfig };
