@@ -87,8 +87,7 @@ const HomePage = () => {
                       label: "Expenses",
                       data: expenses.map((data) => data.total),
                       backgroundColor: expenses.map((data) => data.color),
-                      borderColor: ["#18181b"],
-                      borderWidth: 5,
+                      borderWidth: 0,
                     },
                   ],
                 }}

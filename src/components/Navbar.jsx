@@ -3,6 +3,7 @@ import { ImStatsBars } from "react-icons/im";
 import { AuthContext } from "../context/authContext";
 import { isFeatureEnabled, getFlagValue } from "../config/remoteConfig";
 import { FEATURE_ENABLE_STATS, WELCOME_MESSAGE } from "../constants/flags";
+import ThemeSwitcher from "./ThemeSwitcher";
 
 const Navbar = () => {
   const { user, loading, logout } = useContext(AuthContext);
@@ -31,13 +32,14 @@ const Navbar = () => {
 
         {user && !loading && (
           <nav className='flex items-center gap-4'>
-            <div>
-              {isShowStatsEnabled && (
-                <a href='#stats'>
-                  <ImStatsBars className='text-2xl' />
-                </a>
-              )}
-            </div>
+            <ThemeSwitcher />
+
+            {isShowStatsEnabled && (
+              <a href='#stats'>
+                <ImStatsBars className='text-2xl' />
+              </a>
+            )}
+
             <div>
               <button onClick={logout} className='btn btn-danger'>
                 Sign out

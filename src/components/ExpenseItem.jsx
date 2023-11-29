@@ -17,7 +17,7 @@ const ExpenseItem = ({ expense }) => {
           setViewExpenseModal(true);
         }}
       >
-        <div className='flex items-center justify-between px-4 py-4 bg-slate-700 rounded-xl'>
+        <div className='flex items-center justify-between px-4 py-4 bg-gray-200 dark:bg-slate-700 rounded-xl'>
           <div className='flex item-center gap-2'>
             <div
               className='w-[25px] h-[25px] rounded-full'
