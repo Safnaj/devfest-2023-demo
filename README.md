@@ -1,70 +1,43 @@
-# Getting Started with Create React App
+# DevFest 2023 - Sri Lanka
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+![image](https://github.com/Safnaj/devfest-2023-demo/assets/37530024/2c476c77-adec-4723-80a5-0dc44c6915b3)
 
-In the project directory, you can run:
 
-### `npm start`
+### 1. Create a new Firebase Project.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- Go to https://console.firebase.google.com and create a new Firebase Project.
+- Navigate to Remote Config and create a Boolean Flag Named `feature_enable_dark_mode`
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 2. Clone the Repository
+- `git clone https://github.com/Safnaj/devfest-2023-demo.git`
 
-### `npm test`
+### 3. Add Firebase Config values to `.env` file
+- Inside the project folder create a file called `.env`
+- Refer the `.env.example` and add the values as shown below 
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```
+REACT_APP_FIREBASE_API_KEY=YOUR_API_KEY
+REACT_APP_FIREBASE_AUTH_DOMAIN=YOUR_AUTH_DOMAIN
+REACT_APP_FIREBASE_PROJECT_ID=YOUR_PROJECT_ID
+REACT_APP_FIREBASE_STORAGE_BUCKET=YOUR_STORAGE_BUCKET
+REACT_APP_FIREBASE_MESSAGING_SENDER_ID=YOUR_MESSAGING_SENDER_ID
+REACT_APP_FIREBASE_APP_ID=YOUR_APP_ID
+REACT_APP_FIREBASE_MEASUREMENT_ID=YOUR_MEASUREMENT_ID
+```
 
-### `npm run build`
+### 4. Set Default Config Values
+- Go to `src/config/remoteConfig.js` and inside the `initRemoteConfig` add your flag and it's default value.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 5. Define Flags in Constants
+- Move to `src/constants/flags.js` and create a constant for your flag:
+```
+export const FEATURE_ENABLE_DARK_MODE = 'feature_enable_dark_mode';
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 6. Check flag value 
+- Check your flag value using `isFeatureEnabled` function and write your logic <br/>
+  Ex: `const isShowStatsEnabled = isFeatureEnabled(FEATURE_ENABLE_STATS);`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
