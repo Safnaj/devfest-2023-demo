@@ -1,14 +1,13 @@
 import { useContext } from "react";
 import { ImStatsBars } from "react-icons/im";
 import { AuthContext } from "../context/authContext";
-import { isFeatureEnabled, getFlagValue } from "../config/remoteConfig";
-import { FEATURE_ENABLE_STATS, WELCOME_MESSAGE } from "../constants/flags";
+import { getFlagValue } from "../config/remoteConfig";
+import { WELCOME_MESSAGE } from "../constants/flags";
 import ThemeSwitcher from "./ThemeSwitcher";
 
 const Navbar = () => {
   const { user, loading, logout } = useContext(AuthContext);
   const welcomeMessage = getFlagValue(WELCOME_MESSAGE);
-  const isShowStatsEnabled = isFeatureEnabled(FEATURE_ENABLE_STATS);
 
   return (
     <header className='container max-w-2xl px-6 py-6 mx-auto'>
@@ -34,11 +33,9 @@ const Navbar = () => {
           <nav className='flex items-center gap-4'>
             <ThemeSwitcher />
 
-            {isShowStatsEnabled && (
-              <a href='#stats'>
-                <ImStatsBars className='text-2xl' />
-              </a>
-            )}
+            <a href='#stats'>
+              <ImStatsBars className='text-2xl' />
+            </a>
 
             <div>
               <button onClick={logout} className='btn btn-danger'>
