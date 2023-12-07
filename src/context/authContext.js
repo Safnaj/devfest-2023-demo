@@ -1,11 +1,12 @@
-import { createContext, useState, useEffect, useContext } from "react";
-import { auth } from "../config/firebase";
+import { createContext, useState, useEffect } from "react";
+import { analytics, auth } from "../config/firebase";
 import {
   GoogleAuthProvider,
   onAuthStateChanged,
   signInWithRedirect,
   signOut,
 } from "firebase/auth";
+import { setUserProperties } from "firebase/analytics";
 
 export const AuthContext = createContext({
   user: null,
@@ -13,10 +14,6 @@ export const AuthContext = createContext({
   loginWithGoogle: async () => {},
   logout: async () => {},
 });
-
-export function useAuth() {
-  return useContext(AuthContext);
-}
 
 export default function AuthContextProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -36,12 +33,22 @@ export default function AuthContextProvider({ children }) {
     signOut(auth);
   };
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
+  const authStateChanged = async (user) => {
+    setLoading(true);
+    if (!user) {
+      setUser(null);
       setLoading(false);
+      return;
+    }
+    setUser(user);
+    setUserProperties(analytics, {
+      is_dev_user: user?.email.includes("safnaj99@gmail.com"),
     });
+    setLoading(false);
+  };
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, authStateChanged);
     return () => unsubscribe();
   }, []);
 

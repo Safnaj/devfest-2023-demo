@@ -9,13 +9,11 @@ const config = remoteConfig();
 
 const initRemoteConfig = async () => {
   if (config) {
-    config.settings.minimumFetchIntervalMillis = 0;
+    config.settings.minimumFetchIntervalMillis = 0; // For dev only
     config.defaultConfig = {
-      feature_enable_stats: false,
-      feature_enable_dark_mode: false,
       welcome_message: "Hi",
     };
-    await fetchAndActivate(config);
+    await fetchAndActivate(config); //production interval is 12 hours
   }
 };
 
