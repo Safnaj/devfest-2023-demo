@@ -12,6 +12,8 @@ const initRemoteConfig = async () => {
     config.settings.minimumFetchIntervalMillis = 0; // For dev only
     config.defaultConfig = {
       welcome_message: "Hi",
+      feature_enable_stats: false,
+      feature_enable_dark_mode: false,
     };
     await fetchAndActivate(config); //production interval is 12 hours
   }
