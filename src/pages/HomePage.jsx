@@ -7,6 +7,8 @@ import Navbar from "../components/Navbar";
 import AddIncomeModal from "../components/AddIncomeModal";
 import AddExpenseModal from "../components/AddExpenseModal";
 import { FinanceContext } from "../context/financeContext";
+import { isFeatureEnabled } from "../config/remoteConfig";
+import { FEATURE_ENABLE_STATS } from "../constants/flags";
 
 Chart.register(ArcElement, Tooltip, Legend);
 
@@ -15,6 +17,7 @@ const HomePage = () => {
   const { income, expenses } = useContext(FinanceContext);
   const [showAddIncomeModal, setShowAddIncomeModal] = useState(false);
   const [showAddExpenseModal, setShowAddExpenseModal] = useState(false);
+  const isStatsEnabled = isFeatureEnabled(FEATURE_ENABLE_STATS);
 
   useEffect(() => {
     const newBalance =
@@ -70,25 +73,26 @@ const HomePage = () => {
             ))}
           </div>
         </section>
-
-        <section className='py-6' id='stats'>
-          <h3 className='text-2xl'>Stats</h3>
-          <div className='w-1/2 mx-auto'>
-            <Doughnut
-              data={{
-                labels: expenses.map((data) => data.title),
-                datasets: [
-                  {
-                    label: "Expenses",
-                    data: expenses.map((data) => data.total),
-                    backgroundColor: expenses.map((data) => data.color),
-                    borderWidth: 0,
-                  },
-                ],
-              }}
-            />
-          </div>
-        </section>
+        {isStatsEnabled && (
+          <section className='py-6' id='stats'>
+            <h3 className='text-2xl'>Stats</h3>
+            <div className='w-1/2 mx-auto'>
+              <Doughnut
+                data={{
+                  labels: expenses.map((data) => data.title),
+                  datasets: [
+                    {
+                      label: "Expenses",
+                      data: expenses.map((data) => data.total),
+                      backgroundColor: expenses.map((data) => data.color),
+                      borderWidth: 0,
+                    },
+                  ],
+                }}
+              />
+            </div>
+          </section>
+        )}
       </main>
     </>
   );
