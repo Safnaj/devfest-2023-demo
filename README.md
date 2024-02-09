@@ -6,7 +6,7 @@
 
 ### 1. Create a new Firebase Project.
 
-- Go to https://console.firebase.google.com and create a new Firebase Project.
+- Go to [Firebase Console](https://console.firebase.google.com) and create a new Firebase Project.
 - Navigate to Remote Config and create a Boolean Flag Named `feature_enable_dark_mode`
 
 ### 2. Clone the Repository
