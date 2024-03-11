@@ -2,9 +2,9 @@ const Modal = ({ show, onClose, children }) => {
   return (
     <div
       style={{
-        transform: show ? "translateY(0%)" : "translateY(-200%)",
+        transform: show ? "translateY(0%)" : "translateY(-280%)",
       }}
-      className='absolute top-0 left-0 w-full h-full z-10 transition-all duration-300 backdrop-blur-sm'
+      className='absolute top-0 left-0 w-full h-full z-10 transition-all duration-300 backdrop-blur-md'
     >
       <div className='container mx-auto max-w-2xl h-[80vh] rounded-3xl bg-slate-800 text-white py-6 px-5 mt-10'>
         <button

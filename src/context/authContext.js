@@ -42,7 +42,7 @@ export default function AuthContextProvider({ children }) {
     }
     setUser(user);
     setUserProperties(analytics, {
-      is_dev_user: user?.email.includes("safnaj99@gmail.com"),
+      email: user?.email,
     });
     setLoading(false);
   };
