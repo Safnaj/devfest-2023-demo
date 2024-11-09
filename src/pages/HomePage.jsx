@@ -4,6 +4,7 @@ import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
 import { currencyFormatter } from "../utils";
 import ExpenseItem from "../components/ExpenseItem";
 import Navbar from "../components/Navbar";
+import ExpenseReminder from "../components/ExpenseReminder";
 import AddIncomeModal from "../components/AddIncomeModal";
 import AddExpenseModal from "../components/AddExpenseModal";
 import { FinanceContext } from "../context/financeContext";
@@ -73,6 +74,7 @@ const HomePage = () => {
             ))}
           </div>
         </section>
+        <ExpenseReminder onAddExpense={() => setShowAddExpenseModal(true)} />
         {isStatsEnabled && (
           <section className='py-6' id='stats'>
             <h3 className='text-2xl'>Stats</h3>
