@@ -1,13 +1,16 @@
 import { useState } from "react";
+import { logBannerAccept, logBannerDismiss } from "../config/analytics";
 
-const ExpenseReminder = ({ onAddExpense }) => {
+const ExpenseReminder = ({ onAddExpense, position }) => {
   const [isVisible, setIsVisible] = useState(true);
 
   const handleDismiss = () => {
+    logBannerDismiss(position);
     setIsVisible(false);
   };
 
   const handleAddExpense = () => {
+    logBannerAccept(position);
     onAddExpense();
   };
 

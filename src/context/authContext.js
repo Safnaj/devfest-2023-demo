@@ -3,7 +3,7 @@ import { analytics, auth } from "../config/firebase";
 import {
   GoogleAuthProvider,
   onAuthStateChanged,
-  signInWithRedirect,
+  signInWithPopup,
   signOut,
 } from "firebase/auth";
 import { setUserProperties } from "firebase/analytics";
@@ -22,7 +22,7 @@ export default function AuthContextProvider({ children }) {
 
   const loginWithGoogle = async () => {
     try {
-      await signInWithRedirect(auth, googleProvider);
+      await signInWithPopup(auth, googleProvider);
     } catch (error) {
       console.log(error.message);
       throw error;

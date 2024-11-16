@@ -8,8 +8,11 @@ import ExpenseReminder from "../components/ExpenseReminder";
 import AddIncomeModal from "../components/AddIncomeModal";
 import AddExpenseModal from "../components/AddExpenseModal";
 import { FinanceContext } from "../context/financeContext";
-import { isFeatureEnabled } from "../config/remoteConfig";
-import { FEATURE_ENABLE_STATS } from "../constants/flags";
+import { isFeatureEnabled, getFlagValue } from "../config/remoteConfig";
+import {
+  FEATURE_ENABLE_STATS,
+  EXPENSE_BANNER_LOCATION,
+} from "../constants/flags";
 
 Chart.register(ArcElement, Tooltip, Legend);
 
@@ -19,6 +22,7 @@ const HomePage = () => {
   const [showAddIncomeModal, setShowAddIncomeModal] = useState(false);
   const [showAddExpenseModal, setShowAddExpenseModal] = useState(false);
   const isStatsEnabled = isFeatureEnabled(FEATURE_ENABLE_STATS);
+  const expenseBannerLocation = getFlagValue(EXPENSE_BANNER_LOCATION);
 
   useEffect(() => {
     const newBalance =
@@ -28,9 +32,17 @@ const HomePage = () => {
     setBalance(newBalance);
   }, [expenses, income]);
 
+  const renderExpenseReminder = () => (
+    <ExpenseReminder
+      onAddExpense={() => setShowAddExpenseModal(true)}
+      position={expenseBannerLocation}
+    />
+  );
+
   return (
     <>
       <Navbar />
+      {expenseBannerLocation === "top" && renderExpenseReminder()}
       <AddIncomeModal
         show={showAddIncomeModal}
         onClose={setShowAddIncomeModal}
@@ -74,7 +86,7 @@ const HomePage = () => {
             ))}
           </div>
         </section>
-        <ExpenseReminder onAddExpense={() => setShowAddExpenseModal(true)} />
+        {expenseBannerLocation === "middle" && renderExpenseReminder()}
         {isStatsEnabled && (
           <section className='py-6' id='stats'>
             <h3 className='text-2xl'>Stats</h3>
@@ -95,6 +107,7 @@ const HomePage = () => {
             </div>
           </section>
         )}
+        {expenseBannerLocation === "bottom" && renderExpenseReminder()}
       </main>
     </>
   );

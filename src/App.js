@@ -23,6 +23,7 @@ function App() {
 
 function MainApp() {
   const { user, loading } = useContext(AuthContext);
+  console.log(user);
 
   if (loading) {
     return <Loader />;
