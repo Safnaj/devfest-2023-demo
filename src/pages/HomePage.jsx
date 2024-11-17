@@ -42,7 +42,7 @@ const HomePage = () => {
   return (
     <>
       <Navbar />
-      {expenseBannerLocation === "top" && renderExpenseReminder()}
+
       <AddIncomeModal
         show={showAddIncomeModal}
         onClose={setShowAddIncomeModal}
@@ -54,6 +54,7 @@ const HomePage = () => {
       />
 
       <main className='container max-w-2xl px-6 mx-auto'>
+        {expenseBannerLocation === "top" && renderExpenseReminder()}
         <section>
           <small className='text-gray-400 text-md'>My Balance</small>
           <h2 className='text-4xl font-bold'>{currencyFormatter(balance)}</h2>
